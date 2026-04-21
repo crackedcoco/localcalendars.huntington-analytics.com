@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Your Event | Tri-State Local Calendars — Huntington, Ashland, Ironton, Barboursville</title>
+    <meta name="description" content="Free directory of every public calendar in the Huntington Tri-State area where you can submit a local event. Covers Huntington WV, Barboursville WV, Ashland KY, and Ironton OH.">
+    <meta property="og:title" content="Tri-State Area — Where to Submit Local Events">
+    <meta property="og:description" content="Verified contact info for every public event calendar in Huntington, Barboursville, Ashland, and Ironton.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://localcalendars.huntington-analytics.com">
+    <style>
+        :root {
+            --green-dark: #1a5632;
+            --green-mid: #2d8a4e;
+            --green-light: #e8f5ec;
+            --gold: #d4a843;
+            --gold-light: #fdf6e3;
+            --text: #1a1a2e;
+            --text-light: #555;
+            --bg: #fafaf8;
+            --white: #ffffff;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a { color: var(--green-mid); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--green-dark) 0%, #0d3320 100%);
+            color: white;
+            padding: 3.5rem 1.5rem 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 70%, rgba(212,168,67,0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.4rem;
+            position: relative;
+        }
+        .hero h1 span { color: var(--gold); }
+        .hero .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            opacity: 0.9;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .hero .note {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            max-width: 640px;
+            margin: 0 auto;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        /* Container */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--green-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--green-dark);
+        }
+
+        /* Calendar Cards */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .cal-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            border-left: 4px solid var(--green-mid);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1rem;
+            align-items: start;
+        }
+        .cal-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .cal-card.recommended { border-left-color: var(--gold); }
+        .cal-card.self-service { border-left-color: #3498db; }
+
+        .cal-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+        .cal-type {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+        .cal-card.recommended .cal-type {
+            background: var(--gold-light);
+            color: #8a6d1b;
+        }
+        .cal-card .cal-type {
+            background: var(--green-light);
+            color: var(--green-dark);
+        }
+        .cal-card.self-service .cal-type {
+            background: #e8f0fd;
+            color: #2471a3;
+        }
+
+        .cal-desc {
+            font-size: 0.88rem;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .cal-contact {
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+        .cal-contact .label {
+            font-weight: 700;
+            color: var(--green-dark);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .cal-contact a {
+            font-weight: 600;
+        }
+
+        .cal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-self: center;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn:hover { text-decoration: none; }
+        .btn-primary {
+            background: var(--green-dark);
+            color: white;
+        }
+        .btn-primary:hover { background: var(--green-mid); }
+        .btn-outline {
+            background: transparent;
+            color: var(--green-dark);
+            border: 1.5px solid var(--green-dark);
+        }
+        .btn-outline:hover { background: var(--green-light); }
+
+        /* How-To Section */
+        .howto {
+            background: var(--green-dark);
+            color: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        .howto h2 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+        .howto ol {
+            padding-left: 1.25rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.75rem;
+        }
+        .howto li {
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: var(--gold-light);
+            border: 1px solid #e6d5a0;
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            font-size: 0.85rem;
+            color: #5a4a1e;
+            margin-bottom: 2.5rem;
+        }
+        .info-box strong { color: #3d3210; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            border-top: 1px solid #e0e0e0;
+        }
+        .footer a { color: var(--green-mid); }
+
+        /* Area Nav */
+        .area-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .area-nav-inner {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            max-width: 960px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+        .area-nav-inner::-webkit-scrollbar { display: none; }
+        .area-nav a {
+            flex-shrink: 0;
+            padding: 0.75rem 1.25rem;
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .area-nav a:hover {
+            color: var(--green-dark);
+            border-bottom-color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* Area Section Headers */
+        .area-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--green-dark);
+            scroll-margin-top: 60px;
+        }
+        .area-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--green-dark);
+            color: var(--gold);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            flex-shrink: 0;
+            text-align: center;
+            line-height: 1.1;
+        }
+        .area-header h2 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--green-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .area-header .area-sub {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .area-section {
+            margin-bottom: 2.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .cal-card {
+                grid-template-columns: 1fr;
+            }
+            .cal-actions {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .container { padding: 1.5rem 1rem; }
+            .area-nav a { padding: 0.65rem 0.85rem; font-size: 0.78rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1><span>Tri-State</span> Local Calendars</h1>
+    <div class="subtitle">Where to Submit Your Event</div>
+    <p class="note">A verified directory of every public calendar in the Huntington Tri-State area that accepts community event submissions. Covers Huntington, Barboursville, Ashland, and Ironton — emails, phone numbers, and online forms all in one place.</p>
+</div>
+
+<nav class="area-nav">
+    <div class="area-nav-inner">
+        <a href="#huntington">Huntington, WV</a>
+        <a href="#barboursville">Barboursville, WV</a>
+        <a href="#ashland">Ashland, KY</a>
+        <a href="#ironton">Ironton, OH</a>
+        <a href="#platforms">Self-Service</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="info-box">
+        <strong>Tip:</strong> For maximum Tri-State reach, submit to each community's <strong>newspaper</strong> (Herald-Dispatch, Daily Independent, Ironton Tribune), the relevant <strong>CVB</strong>, and <strong>Eventbrite</strong>. All are free.
+    </div>
+
+    <!-- HUNTINGTON, WV -->
+    <div class="area-section" id="huntington">
+    <div class="area-header">
+        <div class="area-icon">WV</div>
+        <div><h2>Huntington, WV</h2><span class="area-sub">6 calendars</span></div>
+    </div>
+    <div class="calendar-grid">
+
+        <!-- CVB -->
+        <div class="cal-card recommended">
+            <div class="cal-info">
+                <span class="cal-type">Top Pick</span>
+                <div class="cal-name">Cabell-Huntington Convention & Visitors Bureau</div>
+                <div class="cal-desc">The official tourism calendar for the Huntington area. High visibility with visitors and locals searching for things to do.</div>
+                <div class="cal-contact">
+                    <span class="label">Email:</span> <a href="mailto:info@visithuntingtonwv.org">info@visithuntingtonwv.org</a><br>
+                    <span class="label">Online Form:</span> <a href="https://visithuntingtonwv.org/create-event/" target="_blank" rel="noopener">visithuntingtonwv.org/create-event</a><br>
+                    <span class="label">Phone:</span> (304) 525-7333<br>
+                    <span class="label">Address:</span> 210 11th St, Huntington, WV 25701
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="https://visithuntingtonwv.org/create-event/" target="_blank" rel="noopener" class="btn btn-primary">Submit Event</a>
+                <a href="mailto:info@visithuntingtonwv.org" class="btn btn-outline">Email</a>
+            </div>
+        </div>
+
+        <!-- Herald-Dispatch -->
+        <div class="cal-card recommended">
+            <div class="cal-info">
+                <span class="cal-type">Top Pick</span>
+                <div class="cal-name">The Herald-Dispatch</div>
+                <div class="cal-desc">Huntington's daily newspaper. The most widely read local news source — their calendar section reaches print and digital audiences.</div>
+                <div class="cal-contact">
+                    <span class="label">Email:</span> <a href="mailto:hdnews@HDMediaLLC.com">hdnews@HDMediaLLC.com</a><br>
+                    <span class="label">Phone:</span> (304) 526-2799<br>
+                    <span class="label">Website:</span> <a href="https://www.herald-dispatch.com/hdcalendar/" target="_blank" rel="noopener">herald-dispatch.com/hdcalendar</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="mailto:hdnews@HDMediaLLC.com" class="btn btn-primary">Email</a>
+                <a href="https://www.herald-dispatch.com/hdcalendar/" target="_blank" rel="noopener" class="btn btn-outline">View Calendar</a>
+            </div>
+        </div>
+
+        <!-- Old Central City -->
+        <div class="cal-card">
+            <div class="cal-info">
+                <span class="cal-type">Community</span>
+                <div class="cal-name">Old Central City Association</div>
+                <div class="cal-desc">The Central City neighborhood calendar. Events posted here syndicate to partner sites via the Locable platform.</div>
+                <div class="cal-contact">
+                    <span class="label">Email:</span> <a href="mailto:oldcentralcity@gmail.com">oldcentralcity@gmail.com</a><br>
+                    <span class="label">Phone:</span> (304) 523-7887<br>
+                    <span class="label">Address:</span> 544 14th St W, Huntington, WV 25704<br>
+                    <span class="label">Website:</span> <a href="https://www.oldcentralcity.org/calendar/" target="_blank" rel="noopener">oldcentralcity.org/calendar</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="mailto:oldcentralcity@gmail.com" class="btn btn-primary">Email</a>
+                <a href="https://www.oldcentralcity.org/calendar/" target="_blank" rel="noopener" class="btn btn-outline">View Calendar</a>
+            </div>
+        </div>
+
+        <!-- City of Huntington -->
+        <div class="cal-card">
+            <div class="cal-info">
+                <span class="cal-type">Government</span>
+                <div class="cal-name">City of Huntington</div>
+                <div class="cal-desc">The official city calendar. Event submissions go through their Special Event Application — best for events using public spaces or requiring permits.</div>
+                <div class="cal-contact">
+                    <span class="label">Online Form:</span> <a href="https://cityofhuntington.com/i-want-to/apply-for-a/special-event/" target="_blank" rel="noopener">cityofhuntington.com &mdash; Special Event Application</a><br>
+                    <span class="label">Website:</span> <a href="https://www.cityofhuntington.com/calendar" target="_blank" rel="noopener">cityofhuntington.com/calendar</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="https://cityofhuntington.com/i-want-to/apply-for-a/special-event/" target="_blank" rel="noopener" class="btn btn-primary">Apply</a>
+                <a href="https://www.cityofhuntington.com/calendar" target="_blank" rel="noopener" class="btn btn-outline">View Calendar</a>
+            </div>
+        </div>
+
+        <!-- Pullman Square -->
+        <div class="cal-card">
+            <div class="cal-info">
+                <span class="cal-type">Venue</span>
+                <div class="cal-name">Pullman Square</div>
+                <div class="cal-desc">Downtown Huntington's central shopping and dining district. Best for events held at or near Pullman Square.</div>
+                <div class="cal-contact">
+                    <span class="label">Email:</span> <a href="mailto:gtankersley@continental-realestate.com">gtankersley@continental-realestate.com</a><br>
+                    <span class="label">Phone:</span> (304) 522-3203<br>
+                    <span class="label">Website:</span> <a href="https://pullman-square.com/events/event-calendar/" target="_blank" rel="noopener">pullman-square.com/events</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="mailto:gtankersley@continental-realestate.com" class="btn btn-primary">Email</a>
+                <a href="https://pullman-square.com/events/event-calendar/" target="_blank" rel="noopener" class="btn btn-outline">View Calendar</a>
+            </div>
+        </div>
+
+        <!-- Patch -->
+        <div class="cal-card">
+            <div class="cal-info">
+                <span class="cal-type">News / Digital</span>
+                <div class="cal-name">Patch.com (Huntington)</div>
+                <div class="cal-desc">Hyper-local digital news platform. Self-service event posting with paid promotion options for greater reach.</div>
+                <div class="cal-contact">
+                    <span class="label">Support:</span> <a href="mailto:support@patch.com">support@patch.com</a><br>
+                    <span class="label">Website:</span> <a href="https://patch.com/west-virginia/huntington-wv/calendar" target="_blank" rel="noopener">patch.com/west-virginia/huntington-wv/calendar</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="https://patch.com/west-virginia/huntington-wv/calendar" target="_blank" rel="noopener" class="btn btn-primary">Post Event</a>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- BARBOURSVILLE, WV -->
+    <div class="area-section" id="barboursville">
+    <div class="area-header">
+        <div class="area-icon">WV</div>
+        <div><h2>Barboursville, WV</h2><span class="area-sub">2 calendars</span></div>
+    </div>
+    <div class="calendar-grid">
+
+        <!-- Barboursville CVB -->
+        <div class="cal-card recommended">
+            <div class="cal-info">
+                <span class="cal-type">Top Pick</span>
+                <div class="cal-name">Barboursville Convention & Visitors Bureau</div>
+                <div class="cal-desc">The official tourism and events hub for Barboursville. Covers Fall Fest, parades, and all community happenings.</div>
+                <div class="cal-contact">
+                    <span class="label">Email:</span> <a href="mailto:bbeasley@Barboursville.org">bbeasley@Barboursville.org</a><br>
+                    <span class="label">Phone:</span> (304) 733-1500<br>
+                    <span class="label">Address:</span> 701 Main St, Barboursville, WV 25504<br>
+                    <span class="label">Website:</span> <a href="https://discoverbarboursville.com/whats-happening/" target="_blank" rel="noopener">discoverbarboursville.com/whats-happening</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="mailto:bbeasley@Barboursville.org" class="btn btn-primary">Email</a>
+                <a href="https://discoverbarboursville.com/whats-happening/" target="_blank" rel="noopener" class="btn btn-outline">View Calendar</a>
+            </div>
+        </div>
+
+        <!-- Barboursville Park -->
+        <div class="cal-card">
+            <div class="cal-info">
+                <span class="cal-type">Parks &amp; Rec</span>
+                <div class="cal-name">Barboursville Park</div>
+                <div class="cal-desc">For events held at Barboursville Park facilities. Contact to schedule an event or get listed on the park calendar.</div>
+                <div class="cal-contact">
+                    <span class="label">Contact:</span> Andre Price<br>
+                    <span class="label">Phone:</span> (304) 633-4157<br>
+                    <span class="label">Website:</span> <a href="https://barboursvillepark.org/events/" target="_blank" rel="noopener">barboursvillepark.org/events</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="tel:3046334157" class="btn btn-primary">Call</a>
+                <a href="https://barboursvillepark.org/events/" target="_blank" rel="noopener" class="btn btn-outline">View Calendar</a>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- ASHLAND, KY -->
+    <div class="area-section" id="ashland">
+    <div class="area-header">
+        <div class="area-icon">KY</div>
+        <div><h2>Ashland, KY</h2><span class="area-sub">3 calendars</span></div>
+    </div>
+    <div class="calendar-grid">
+
+        <!-- Visit AKY -->
+        <div class="cal-card recommended">
+            <div class="cal-info">
+                <span class="cal-type">Top Pick</span>
+                <div class="cal-name">Visit AKY (Ashland Convention & Visitors Bureau)</div>
+                <div class="cal-desc">Ashland's official tourism site. Has a public "Submit an Event" feature for their community calendar. Covers all of Boyd County.</div>
+                <div class="cal-contact">
+                    <span class="label">Online Form:</span> <a href="https://visitaky.com/community-calendar" target="_blank" rel="noopener">visitaky.com/community-calendar</a> (Submit an Event link)<br>
+                    <span class="label">Website:</span> <a href="https://visitaky.com/" target="_blank" rel="noopener">visitaky.com</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="https://visitaky.com/community-calendar" target="_blank" rel="noopener" class="btn btn-primary">Submit Event</a>
+            </div>
+        </div>
+
+        <!-- Daily Independent -->
+        <div class="cal-card">
+            <div class="cal-info">
+                <span class="cal-type">Newspaper</span>
+                <div class="cal-name">The Daily Independent</div>
+                <div class="cal-desc">Ashland's daily newspaper (Boyd County). Publishes Tue/Thu/Sat with a community events section in print and online.</div>
+                <div class="cal-contact">
+                    <span class="label">Phone:</span> (606) 326-2600<br>
+                    <span class="label">Address:</span> 224 17th St, Ashland, KY 41101<br>
+                    <span class="label">Website:</span> <a href="https://www.dailyindependent.com/events/" target="_blank" rel="noopener">dailyindependent.com/events</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="tel:6063262600" class="btn btn-primary">Call</a>
+                <a href="https://www.dailyindependent.com/events/" target="_blank" rel="noopener" class="btn btn-outline">View Calendar</a>
+            </div>
+        </div>
+
+        <!-- City of Ashland -->
+        <div class="cal-card">
+            <div class="cal-info">
+                <span class="cal-type">Government</span>
+                <div class="cal-name">City of Ashland</div>
+                <div class="cal-desc">Official city calendar. For events using public parks or streets, an Event Request Form is required through Parks &amp; Recreation.</div>
+                <div class="cal-contact">
+                    <span class="label">Phone (Parks &amp; Rec):</span> (606) 385-3295<br>
+                    <span class="label">Website:</span> <a href="https://www.ashlandky.gov/calendar.php" target="_blank" rel="noopener">ashlandky.gov/calendar</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="tel:6063853295" class="btn btn-primary">Call</a>
+                <a href="https://www.ashlandky.gov/calendar.php" target="_blank" rel="noopener" class="btn btn-outline">View Calendar</a>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- IRONTON, OH -->
+    <div class="area-section" id="ironton">
+    <div class="area-header">
+        <div class="area-icon">OH</div>
+        <div><h2>Ironton, OH</h2><span class="area-sub">2 calendars</span></div>
+    </div>
+    <div class="calendar-grid">
+
+        <!-- Ironton Tribune -->
+        <div class="cal-card recommended">
+            <div class="cal-info">
+                <span class="cal-type">Top Pick</span>
+                <div class="cal-name">The Ironton Tribune</div>
+                <div class="cal-desc">Lawrence County's local newspaper. Publishes a community calendar in print and online. The primary way Ironton residents find local events.</div>
+                <div class="cal-contact">
+                    <span class="label">Email:</span> <a href="mailto:briefs@irontontribune.com">briefs@irontontribune.com</a><br>
+                    <span class="label">Phone:</span> (740) 532-1445 ext. 223<br>
+                    <span class="label">Address:</span> 211 Center St, Ironton, OH<br>
+                    <span class="label">Website:</span> <a href="https://irontontribune.com/" target="_blank" rel="noopener">irontontribune.com</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="mailto:briefs@irontontribune.com" class="btn btn-primary">Email</a>
+                <a href="https://irontontribune.com/" target="_blank" rel="noopener" class="btn btn-outline">View Site</a>
+            </div>
+        </div>
+
+        <!-- City of Ironton -->
+        <div class="cal-card">
+            <div class="cal-info">
+                <span class="cal-type">Government</span>
+                <div class="cal-name">City of Ironton</div>
+                <div class="cal-desc">Official city events page. Contact the Mayor's office to get your event listed or to inquire about public space usage.</div>
+                <div class="cal-contact">
+                    <span class="label">Email:</span> <a href="mailto:mayorassist@ironton-ohio.com">mayorassist@ironton-ohio.com</a><br>
+                    <span class="label">Phone:</span> (740) 532-3833<br>
+                    <span class="label">Website:</span> <a href="https://irontonohio.org/events/" target="_blank" rel="noopener">irontonohio.org/events</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="mailto:mayorassist@ironton-ohio.com" class="btn btn-primary">Email</a>
+                <a href="https://irontonohio.org/events/" target="_blank" rel="noopener" class="btn btn-outline">View Calendar</a>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- SELF-SERVICE PLATFORMS -->
+    <div class="area-section" id="platforms">
+    <h2 class="section-title">Self-Service Platforms (All Areas)</h2>
+    <div class="calendar-grid">
+
+        <!-- Eventbrite -->
+        <div class="cal-card self-service">
+            <div class="cal-info">
+                <span class="cal-type">Platform</span>
+                <div class="cal-name">Eventbrite</div>
+                <div class="cal-desc">The largest event discovery platform. Free to list free events. Provides ticketing, RSVP tracking, and strong Google search visibility.</div>
+                <div class="cal-contact">
+                    <span class="label">How:</span> Create a free organizer account, then "Create Event"<br>
+                    <span class="label">Website:</span> <a href="https://www.eventbrite.com/d/wv--huntington/events/" target="_blank" rel="noopener">eventbrite.com &mdash; Huntington, WV</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="https://www.eventbrite.com/create" target="_blank" rel="noopener" class="btn btn-primary">Create Event</a>
+            </div>
+        </div>
+
+        <!-- Bandsintown -->
+        <div class="cal-card self-service">
+            <div class="cal-info">
+                <span class="cal-type">Music / Performance</span>
+                <div class="cal-name">Bandsintown</div>
+                <div class="cal-desc">Best for concerts, live music, and performance events. Artists and venues can list shows that reach fans who follow local events.</div>
+                <div class="cal-contact">
+                    <span class="label">How:</span> Register as an artist or venue via their platform<br>
+                    <span class="label">Website:</span> <a href="https://www.bandsintown.com/c/huntington-wv" target="_blank" rel="noopener">bandsintown.com &mdash; Huntington, WV</a>
+                </div>
+            </div>
+            <div class="cal-actions">
+                <a href="https://www.bandsintown.com/c/huntington-wv" target="_blank" rel="noopener" class="btn btn-primary">View Listings</a>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <!-- HOW TO -->
+    <div class="howto">
+        <h2>How to Get the Most Reach</h2>
+        <ol>
+            <li><strong>Submit to the CVB first.</strong> Their online form is the fastest. This gets you in front of tourists and locals who use Visit Huntington as their go-to.</li>
+            <li><strong>Email the Herald-Dispatch.</strong> Include date, time, location, a short description, and a contact number. They'll add it to their print and digital calendar.</li>
+            <li><strong>List on Eventbrite.</strong> Even for free events. It ranks well on Google and gives people a way to RSVP so you can gauge interest.</li>
+            <li><strong>Post to Patch &amp; Facebook.</strong> Patch is free and reaches local readers. A Facebook Event in Huntington community groups rounds out your digital footprint.</li>
+            <li><strong>Contact the venue.</strong> If your event is at Pullman Square, Old Central City, or another established venue, ask them to cross-list it on their calendar too.</li>
+        </ol>
+    </div>
+
+    <!-- DISCLAIMER -->
+    <div class="info-box">
+        <strong>Note:</strong> Contact information was verified in April 2026. Emails and submission processes may change — if you find something out of date, let us know at <a href="mailto:info@huntington-analytics.com">info@huntington-analytics.com</a>.
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>Tri-State Local Calendars &mdash; A free community resource by <a href="https://huntington-analytics.com">Huntington Analytics</a></p>
+    <p style="margin-top: 0.4rem;">Helping Tri-State businesses and organizations get the word out.</p>
+</div>
+
+</body>
+</html>
